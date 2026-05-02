@@ -1,45 +1,28 @@
-# Vercel Deploy Diagnoser
+Prerequisites:
 
-A Vercel webhook-driven GitHub bot that posts a new PR comment for each failed production deployment, including Claude-based diagnosis and actionable fixes.
+- [Vercel CLI](https://vercel.com/docs/cli) installed globally
 
-## Features
+To develop locally:
 
-- Verifies Vercel webhook signatures.
-- Filters to failed production deployments only.
-- Resolves linked PR from commit SHA.
-- Diagnoses failure with Claude Opus via Vercel AI SDK.
-- Posts a new GitHub PR comment for each failed deployment.
-- Adds retry behavior and deployment-state idempotency keys.
-
-## Project Structure
-
-- `app/api/webhooks/vercel/route.ts`: webhook entrypoint.
-- `lib/core/handler.ts`: orchestration pipeline.
-- `lib/vercel/client.ts`: Vercel API integration.
-- `lib/github/client.ts`: GitHub API integration.
-- `lib/diagnosis/claude.ts`: Claude structured diagnosis.
-- `test/*.spec.ts`: unit tests.
-
-## Setup
-
-1. Copy `.env.example` to `.env` and fill values.
-2. Install dependencies:
-
-```bash
+```
 npm install
+vc dev
 ```
 
-3. Run tests:
-
-```bash
-npm test
+```
+open http://localhost:3000
 ```
 
-4. Configure Vercel webhook to call your endpoint:
+To build locally:
 
-`/api/webhooks/vercel`
+```
+npm install
+vc build
+```
 
-## Required Permissions
+To deploy:
 
-- GitHub PAT should allow creating PR issue comments in the target repository.
-- Vercel token should allow reading deployment details/events.
+```
+npm install
+vc deploy
+```
