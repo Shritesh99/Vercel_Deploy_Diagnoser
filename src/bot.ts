@@ -45,13 +45,18 @@ function usageMessage(): string {
 export const bot = new Chat({
 	userName: process.env.BOT_USERNAME ?? "vercel-diagnoser",
 	adapters: {
-		github: createGitHubAdapter(),
+		github: createGitHubAdapter({
+			appId: process.env.GITHUB_APP_ID!,
+			privateKey: process.env.GITHUB_PRIVATE_KEY!,
+			webhookSecret: process.env.GITHUB_WEBHOOK_SECRET!,
+		}),
 	},
 	state: createRedisState(),
 });
 
+// Debug: Log all possible events
 bot.onNewMention(async (thread, message) => {
-	console.log("Message received:", message);
+	console.log("Mention received:", message);
 	const text = textFromMessage(message);
 	const lower = text.toLowerCase();
 
