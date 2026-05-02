@@ -1,14 +1,20 @@
-import { Hono } from 'hono'
+import { waitUntil } from "@vercel/functions";
+import { Hono } from "hono";
+import { bot } from "./bot.js";
 
-const app = new Hono()
+const app = new Hono();
 
-const welcomeStrings = [
-  'Hello Hono!',
-  'To learn more about Hono on Vercel, visit https://vercel.com/docs/frameworks/backend/hono'
-]
+app.get("/", (c) => {
+  return c.text("Vercel Deployment Diagnoser bot is running.");
+});
 
-app.get('/', (c) => {
-  return c.text(welcomeStrings.join('\n\n'))
-})
+app.post("/api/webhooks/github", async (c) => {
+  const handler = bot.webhooks.github;
+  if (!handler) {
+    return c.text("GitHub adapter not configured", 404);
+  }
 
-export default app
+  return handler(c.req.raw, { waitUntil });
+});
+
+export default app;

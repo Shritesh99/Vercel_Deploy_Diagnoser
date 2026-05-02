@@ -4,6 +4,11 @@ on:
      push:
           branches:
                - main
+     pull_request:
+          types:
+               - closed
+          branches:
+               - main
      workflow_dispatch:
 
 permissions:
@@ -13,6 +18,7 @@ jobs:
      deploy-production:
           runs-on: ubuntu-latest
           timeout-minutes: 20
+          if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
           steps:
                - name: Checkout
                  uses: actions/checkout@v4
