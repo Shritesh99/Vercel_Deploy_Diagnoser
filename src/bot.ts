@@ -51,6 +51,7 @@ export const bot = new Chat({
 });
 
 bot.onNewMention(async (thread, message) => {
+	console.log("Message received:", message);
 	const text = textFromMessage(message);
 	const lower = text.toLowerCase();
 
